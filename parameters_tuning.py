@@ -3,7 +3,7 @@ import Graph, MDSGeneticAlgorithm
 import time, os
 
 def target_runner(experiment, scenario):
-    global graphs, n, num_of_calls
+    global graphs, n
     i = experiment['instance']
     graph = graphs[i]
     seed = experiment['seed']
