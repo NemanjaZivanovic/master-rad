@@ -430,7 +430,7 @@ class MDSGeneticAlgorithm:
           index = round(math.log2(current_genetic_code - new_current_genetic_code))
           mask = ~(1 << index)
           # new_genetic_code is the code obtained from current genetic code
-          # when the right-most bit is flipped to zero
+          # when the right-most non-zero bit is flipped to zero
           new_genetic_code = unique_chromosomes[i].genetic_code & mask
 
           if self.valid_solution(new_genetic_code, index):
