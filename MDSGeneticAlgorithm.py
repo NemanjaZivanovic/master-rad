@@ -356,10 +356,7 @@ class MDSGeneticAlgorithm:
       if value < self.mutation_rate:
         mutation_point = random.randrange(self.n)
         helper_number = 1 << (self.n - mutation_point - 1)
-        if genetic_code & helper_number == 0:
-          return genetic_code | helper_number, self.n - mutation_point - 1
-        else:
-          return genetic_code - helper_number, self.n - mutation_point - 1
+        return genetic_code ^ helper_number, self.n - mutation_point - 1
 
       return genetic_code, None
       
