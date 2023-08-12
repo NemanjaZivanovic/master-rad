@@ -122,19 +122,19 @@ class MDSGeneticAlgorithm:
       self.cache.set(genetic_code, fitness)
       return fitness
 
-    def chromosome_fix(self, chromosome):
+    def chromosome_repair(self, chromosome):
       for index in range(self.n):
         if chromosome.genetic_code & self.graph[index] == 0:
           chromosome.genetic_code |= (1 << self.n - 1 - index)
           chromosome.fitness += 1
     
-    def better_chromosome_fix(self, chromosome):
+    def better_chromosome_repair(self, chromosome):
       for index in self.nodes_order_by_in_degree:
         if chromosome.genetic_code & self.graph[index] == 0:
           chromosome.genetic_code |= (1 << self.n - 1 - index)
           chromosome.fitness += 1
 
-    def random_order_fix(self, chromosome):
+    def random_order_repair(self, chromosome):
       order = list(range(self.n))
       random.shuffle(order)
       for index in order:
@@ -142,7 +142,7 @@ class MDSGeneticAlgorithm:
           chromosome.genetic_code |= (1 << self.n - 1 - index)
           chromosome.fitness += 1
     
-    def best_chromosome_fix(self, removed_nodes, crossover_point, mutation_point, child):
+    def best_chromosome_repair(self, removed_nodes, crossover_point, mutation_point, child):
         length_of_potentially_nondominated_nodes_list = 0
         removed_nodes_indexes = []
         
@@ -169,7 +169,7 @@ class MDSGeneticAlgorithm:
                 child.genetic_code |= (1 << (self.n - 1 - i))
                 child.fitness += 1
         else:
-          self.better_chromosome_fix(child)
+          self.better_chromosome_repair(child)
 
     def create_children(self, parent1, parent2):
         child1_genetic_code, child2_genetic_code, crossover_point = self.crossover(parent1.genetic_code, parent2.genetic_code)
@@ -214,14 +214,14 @@ class MDSGeneticAlgorithm:
         child1 = Chromosome(child1_genetic_code, child1_fitness)
         child2 = Chromosome(child2_genetic_code, child2_fitness)
 
-        self.best_chromosome_fix(removed_nodes1, crossover_point, mutation_point1, child1)
-        self.best_chromosome_fix(removed_nodes2, crossover_point, mutation_point2, child2)
+        self.best_chromosome_repair(removed_nodes1, crossover_point, mutation_point1, child1)
+        self.best_chromosome_repair(removed_nodes2, crossover_point, mutation_point2, child2)
        
         return (child1, child2)
     
     def calculate_num_of_ones_limit(self):
       empty_chromosome = Chromosome(0, 0)
-      self.better_chromosome_fix(empty_chromosome)
+      self.better_chromosome_repair(empty_chromosome)
       return empty_chromosome.fitness
 
     def get_random_position(self, probabilities):
@@ -262,7 +262,7 @@ class MDSGeneticAlgorithm:
         # we might have duplicate indexes, so fitness is calculated explicitly
         fitness = self.calculate_fitness(genetic_code)
         new_chromosome = Chromosome(genetic_code, fitness)
-        self.better_chromosome_fix(new_chromosome)
+        self.better_chromosome_repair(new_chromosome)
 
         population.append(new_chromosome)
 
